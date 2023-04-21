@@ -441,10 +441,7 @@ def run_training(
 ):
     print("running training...")
     writer = SummaryWriter(f"{args.output_dir}/logs/{args.output_prefix}/")
-    if int(args.early_stopping) > -1:
-        epochs_to_run = int(args.early_stopping)
-    else:
-        epochs_to_run = int(args.epochs)
+    epochs_to_run = int(args.epochs)
     epoch_pbar = tqdm(
         range(epochs_to_run),
         total=epochs_to_run,
