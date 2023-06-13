@@ -57,3 +57,122 @@ Run `notebooks/02-lincs-well-aggregation-sphering.ipynb`
 #### To classify the MOA
 
 [TBD]
+
+
+
+## In addition to the code above, we release the following models, features, embeddings, and auxiliery files to facilitate the reproduction of the results:
+
+### HPA FOV
+
+#### DINO features of HPA FOV
+DINO_features_for_HPA_FOV.pth
+
+#### Bestfitting features of HPA FOV
+bestfitting_features_for_HPA_FOV.pth
+
+#### train / test divisions for protein localizations and cell line classification
+cells_train_IDs.pth
+cells_valid_IDs.pth
+train_IDs.pth
+valid_IDs.pth
+
+#### HPA single cell kaggle protein localization competition, download from https://www.kaggle.com/competitions/human-protein-atlas-image-classification/leaderboard
+human-protein-atlas-image-classification-publicleaderboard.csv
+
+#### HPA cell line RNASeq data
+rna_cellline.tsv
+
+#### HPA FOV color visualization
+whole_image_cell_color_indices.pth
+whole_image_protein_color_indices.pth
+
+#### HPA FOV metadata
+whole_images.csv
+
+
+### HPA single cells
+
+#### HPA single cell kaggle protein localization competition, download from https://www.kaggle.com/competitions/hpa-single-cell-image-classification/leaderboard
+HPA_single_cells_data/hpa-single-cell-image-classification-publicleaderboard.csv
+
+#### HPA XML data
+HPA_single_cells_data/XML_HPA.csv
+
+#### UNIPROT interaction dataset 
+HPA_single_cells_data/uniport_interactions.tsv
+
+#### UMAP of HPA single cells features aggregated by FOV
+HPA_single_cells_data/DINO_embedding_average_umap.csv
+
+#### UMAP of HPA single cells features aggregated by FOV, harmonized
+HPA_single_cells_data/DINO_harmonized_embedding_average_umap.csv
+
+#### DINO features of HPA single cells
+HPA_single_cells_data/DINO_features_for_HPA_single_cells.pth
+
+#### Dualhead features of HPA single cells
+HPA_single_cells_data/dualhead_features_for_HPA_single_cells.pth
+
+#### HPA single cells Metadata
+HPA_single_cells_data/fixed_size_masked_single_cells_for_sc.csv
+
+#### HPA gene heterogeneity annotated by experts
+HPA_single_cells_data/gene_heterogeneity.tsv
+
+#### DINO model checkpoint
+HPA_single_cells_data/HPA_single_cell_model_checkpoint.pth
+
+#### single cell metadata with genetic information
+HPA_single_cells_data/Master_scKaggle.csv
+
+#### Pretrained DINO features of HPA single cells
+HPA_single_cells_data/pretrained_DINO_features_for_HPA_single_cells.pth
+
+#### Pretrained DINO model checkpoint
+HPA_single_cells_data/pretrain_single_cell_checkpoint.pth*
+
+
+### WTC11
+
+#### UMAP of WTC11 features aggregated by FOV
+Allen_3_channel_trained_embedding.pth
+
+#### UMAP of WTC11 features aggregated by FOV, harmonized
+Allen_3_channel_trained_embedding_harmonized.pth
+
+#### Cell stage predictions for pretrained DINO model
+predictions_for_WTC11_pretrained_model.pth
+
+#### Cell stage predictions for trained DINO model
+predictions_for_WTC11_trained_model.pth
+
+#### Cell stage predictions for XGBoost
+predictions_for_WTC11_xgb.pth
+
+#### DINO features for WTC11 data
+DINO_features_and_df.pth
+
+#### Engineered features for WTC11 data
+engineered_features.pth
+
+#### DINO Pretrained features for WTC11 data
+pretrained_features_and_df.pth
+pretrained_b_features.pth
+pretrained_g_features.pth
+pretrained_y_features.pth
+
+#### DINO model for WTC11 data
+model_3_channels_checkpoint.pth
+
+#### WTC11 metadata
+normalized_cell_df.csv
+
+#### Train / test indices
+train_indices.pth
+test_indices.pth
+
+
+### Cell Painting
+
+
+ 
