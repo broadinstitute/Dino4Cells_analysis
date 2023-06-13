@@ -65,29 +65,29 @@ Run `notebooks/02-lincs-well-aggregation-sphering.ipynb`
 ### HPA FOV
 
 #### DINO features of HPA FOV
-DINO_features_for_HPA_FOV.pth
+HPA_FOV_data/DINO_features_for_HPA_FOV.pth
 
 #### Bestfitting features of HPA FOV
-bestfitting_features_for_HPA_FOV.pth
+HPA_FOV_data/bestfitting_features_for_HPA_FOV.pth
 
 #### train / test divisions for protein localizations and cell line classification
-cells_train_IDs.pth
-cells_valid_IDs.pth
-train_IDs.pth
-valid_IDs.pth
+HPA_FOV_data/cells_train_IDs.pth
+HPA_FOV_data/cells_valid_IDs.pth
+HPA_FOV_data/train_IDs.pth
+HPA_FOV_data/valid_IDs.pth
 
 #### HPA single cell kaggle protein localization competition, download from https://www.kaggle.com/competitions/human-protein-atlas-image-classification/leaderboard
-human-protein-atlas-image-classification-publicleaderboard.csv
+HPA_FOV_data/human-protein-atlas-image-classification-publicleaderboard.csv
 
 #### HPA cell line RNASeq data
-rna_cellline.tsv
+HPA_FOV_data/rna_cellline.tsv
 
 #### HPA FOV color visualization
-whole_image_cell_color_indices.pth
-whole_image_protein_color_indices.pth
+HPA_FOV_data/whole_image_cell_color_indices.pth
+HPA_FOV_data/whole_image_protein_color_indices.pth
 
 #### HPA FOV metadata
-whole_images.csv
+HPA_FOV_data/whole_images.csv
 
 
 ### HPA single cells
@@ -135,44 +135,44 @@ HPA_single_cells_data/pretrain_single_cell_checkpoint.pth*
 ### WTC11
 
 #### UMAP of WTC11 features aggregated by FOV
-Allen_3_channel_trained_embedding.pth
+WTC11_data/Allen_3_channel_trained_embedding.pth
 
 #### UMAP of WTC11 features aggregated by FOV, harmonized
-Allen_3_channel_trained_embedding_harmonized.pth
+WTC11_data/Allen_3_channel_trained_embedding_harmonized.pth
 
 #### Cell stage predictions for pretrained DINO model
-predictions_for_WTC11_pretrained_model.pth
+WTC11_data/predictions_for_WTC11_pretrained_model.pth
 
 #### Cell stage predictions for trained DINO model
-predictions_for_WTC11_trained_model.pth
+WTC11_data/predictions_for_WTC11_trained_model.pth
 
 #### Cell stage predictions for XGBoost
-predictions_for_WTC11_xgb.pth
+WTC11_data/predictions_for_WTC11_xgb.pth
 
 #### DINO features for WTC11 data
-DINO_features_and_df.pth
+WTC11_data/DINO_features_and_df.pth
 
 #### Engineered features for WTC11 data
-engineered_features.pth
+WTC11_data/engineered_features.pth
 
 #### DINO Pretrained features for WTC11 data
-pretrained_features_and_df.pth
-pretrained_b_features.pth
-pretrained_g_features.pth
-pretrained_y_features.pth
+WTC11_data/pretrained_features_and_df.pth
+WTC11_data/pretrained_b_features.pth
+WTC11_data/pretrained_g_features.pth
+WTC11_data/pretrained_y_features.pth
 
 #### DINO model for WTC11 data
-model_3_channels_checkpoint.pth
+WTC11_data/model_3_channels_checkpoint.pth
 
 #### WTC11 metadata
-normalized_cell_df.csv
+WTC11_data/normalized_cell_df.csv
 
 #### Train / test indices
-train_indices.pth
-test_indices.pth
+WTC11_data/train_indices.pth
+WTC11_data/test_indices.pth
 
 
 ### Cell Painting
 
 
- 
+ [TBD]
