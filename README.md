@@ -10,38 +10,50 @@ This repo will contain the code for reproducing the results and figures of the p
 
 ## Classification
 
-To train classifiers on the features extracted using DINO, please use the following pipeline
+To train classifiers on the features extracted using DINO, please use the following pipeline for the different datasets and tasks:
 
-### Train / test division
+### HPA whole images
 
-First, divide the data into train and test. There are two separate train / test divisions, based on whether the classification task was protein localization or cell type prediction.
-
-#### For single cell classification:
-
-`python divide_train_valid.py --config config_HPA_single_cells.yaml`
-
-`python divide_train_valid.py --config config_HPA_single_cells.yaml --cells` 
-
-#### For HPA FOV classification:
+#### Train / test division
 
 `python divide_train_valid.py --config config_HPA_FOV.yaml`
 
 `python divide_train_valid.py --config config_HPA_FOV.yaml --cells` 
 
-### Train classififier
-
-#### For HPA FOV protein localization classification
+#### Protein localization classification
 
 `CUDA_VISIBLE_DEVICES=0,1,2,3 python  -m torch.distributed.launch --nproc_per_node=4 run_end_to_end.py --config config_HPA_FOV.yaml --epochs 10 --balance True --num_classes 28 --train_cell_type False --train_protein True --train True --test True --classifier_state_dict results/HPA_FOV_classification/classifier_protein.pth`
 
-#### For HPA FOV cell line classification
+#### Cell line classification
 
 `CUDA_VISIBLE_DEVICES=0,1,2,3 python  -m torch.distributed.launch --nproc_per_node=4 run_end_to_end.py --config config_HPA_FOV.yaml --epochs 10 --balance True --num_classes 35 --train_cell_type True --train_protein False --train True --test True --classifier_state_dict results/HPA_FOV_classification/classifier_cells.pth`
 
-#### For HPA single cells protein localization classification
+### HPA single cells
+
+#### Train / test division
+
+`python divide_train_valid.py --config config_HPA_single_cells.yaml`
+
+`python divide_train_valid.py --config config_HPA_single_cells.yaml --cells` 
+
+#### Protein localization classification
 
 `CUDA_VISIBLE_DEVICES=0,1,2,3 python  -m torch.distributed.launch --nproc_per_node=4 run_end_to_end.py --config config_HPA_single_cells.yaml --epochs 10 --balance True --num_classes 19 --train_cell_type False --train_protein True --train True --test True --classifier_state_dict results/HPA_single_cells_classification/classifier_protein.pth`
 
-#### For HPA single cells cell line classification
+#### Cell line classification
 
 `CUDA_VISIBLE_DEVICES=0,1,2,3 python  -m torch.distributed.launch --nproc_per_node=4 run_end_to_end.py --config config_HPA_single_cells.yaml --epochs 10 --balance True --num_classes 29 --train_cell_type True --train_protein False --train True --test True --classifier_state_dict results/HPA_single_cells_classification/classifier_cells.pth`
+
+### WTC11 cell stage classification
+
+Run `notebooks/WTC11_classifiers.ipynb`
+
+### Cell Painting 
+
+#### To preprocess and sphere the LINCS data
+
+Run `notebooks/02-lincs-well-aggregation-sphering.ipynb`
+
+#### To classify the MOA
+
+[TBD]
