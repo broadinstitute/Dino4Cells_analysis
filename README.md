@@ -131,6 +131,10 @@ HPA_single_cells_data/pretrained_DINO_features_for_HPA_single_cells.pth
 #### Pretrained DINO model checkpoint
 HPA_single_cells_data/pretrain_single_cell_checkpoint.pth*
 
+#### HPA single cell color visualization
+HPA_single_cells_data/cell_color_indices.pth
+HPA_single_cells_data/protein_color_indices.pth
+
 
 ### WTC11
 
@@ -173,6 +177,5 @@ WTC11_data/test_indices.pth
 
 
 ### Cell Painting
-
 
  [TBD]
