@@ -62,13 +62,34 @@ Run `notebooks/02-lincs-well-aggregation-sphering.ipynb`
 
 ## In addition to the code above, we release the following models, features, embeddings, and auxiliery files to facilitate the reproduction of the results:
 
-### HPA FOV
+## HPA FOV
+
+### Model checkpoints
+
+HPA_FOV_data/DINO_FOV_checkpoint.pth
+
+### Baselines
+
+HPA_FOV_data/Pretrained_base8_DINO_checkpoint.pth
+
+### features
 
 #### DINO features of HPA FOV
 HPA_FOV_data/DINO_features_for_HPA_FOV.pth
 
 #### Bestfitting features of HPA FOV
 HPA_FOV_data/bestfitting_features_for_HPA_FOV.pth
+
+### Embeddings
+
+HPA_FOV_data/DINO_FOV_harmonized_embeddings.csv
+HPA_FOV_data/DINO_FOV_embeddings.csv
+
+
+### Misc
+
+#### HPA FOV metadata
+HPA_FOV_data/whole_images.csv
 
 #### train / test divisions for protein localizations and cell line classification
 HPA_FOV_data/cells_train_IDs.pth
@@ -86,11 +107,45 @@ HPA_FOV_data/rna_cellline.tsv
 HPA_FOV_data/whole_image_cell_color_indices.pth
 HPA_FOV_data/whole_image_protein_color_indices.pth
 
-#### HPA FOV metadata
-HPA_FOV_data/whole_images.csv
+### Classifiers
+
+HPA_FOV_data/classifier_cells.pth
+HPA_FOV_data/classifier_proteins.pth
+
+## HPA single cells
 
 
-### HPA single cells
+### Model checkpoints
+
+#### DINO model checkpoint
+HPA_single_cells_data/DINO_single_cell_checkpoint.pth
+HPA_single_cells_data/HPA_single_cell_model_checkpoint.pth
+
+### Baselines
+
+#### Pretrained DINO model checkpoint
+HPA_single_cells_data/Pretrained_base16_DINO_checkpoint.pth
+
+### features
+
+#### DINO features of HPA single cells
+HPA_single_cells_data/DINO_features_for_HPA_single_cells.pth
+
+#### Dualhead features of HPA single cells
+HPA_single_cells_data/dualhead_features_for_HPA_single_cells.pth
+
+#### Pretrained DINO features of HPA single cells
+HPA_single_cells_data/pretrained_DINO_features_for_HPA_single_cells.pth
+
+### Embeddings
+
+#### UMAP of HPA single cells features aggregated by FOV
+HPA_single_cells_data/DINO_embedding_average_umap.csv
+
+#### UMAP of HPA single cells features aggregated by FOV, harmonized
+HPA_single_cells_data/DINO_harmonized_embedding_average_umap.csv
+
+### Misc
 
 #### HPA single cell kaggle protein localization competition, download from https://www.kaggle.com/competitions/hpa-single-cell-image-classification/leaderboard
 HPA_single_cells_data/hpa-single-cell-image-classification-publicleaderboard.csv
@@ -101,57 +156,38 @@ HPA_single_cells_data/XML_HPA.csv
 #### UNIPROT interaction dataset 
 HPA_single_cells_data/uniport_interactions.tsv
 
-#### UMAP of HPA single cells features aggregated by FOV
-HPA_single_cells_data/DINO_embedding_average_umap.csv
-
-#### UMAP of HPA single cells features aggregated by FOV, harmonized
-HPA_single_cells_data/DINO_harmonized_embedding_average_umap.csv
-
-#### DINO features of HPA single cells
-HPA_single_cells_data/DINO_features_for_HPA_single_cells.pth
-
-#### Dualhead features of HPA single cells
-HPA_single_cells_data/dualhead_features_for_HPA_single_cells.pth
-
 #### HPA single cells Metadata
 HPA_single_cells_data/fixed_size_masked_single_cells_for_sc.csv
 
 #### HPA gene heterogeneity annotated by experts
 HPA_single_cells_data/gene_heterogeneity.tsv
 
-#### DINO model checkpoint
-HPA_single_cells_data/HPA_single_cell_model_checkpoint.pth
-
 #### single cell metadata with genetic information
 HPA_single_cells_data/Master_scKaggle.csv
-
-#### Pretrained DINO features of HPA single cells
-HPA_single_cells_data/pretrained_DINO_features_for_HPA_single_cells.pth
-
-#### Pretrained DINO model checkpoint
-HPA_single_cells_data/pretrain_single_cell_checkpoint.pth*
 
 #### HPA single cell color visualization
 HPA_single_cells_data/cell_color_indices.pth
 HPA_single_cells_data/protein_color_indices.pth
 
+### Classifiers
 
-### WTC11
+HPA_single_cells_data/classifier_cells.pth
+HPA_single_cells_data/classifier_proteins.pth
 
-#### UMAP of WTC11 features aggregated by FOV
-WTC11_data/Allen_3_channel_trained_embedding.pth
+## WTC11
 
-#### UMAP of WTC11 features aggregated by FOV, harmonized
-WTC11_data/Allen_3_channel_trained_embedding_harmonized.pth
 
-#### Cell stage predictions for pretrained DINO model
-WTC11_data/predictions_for_WTC11_pretrained_model.pth
+### Model checkpoints
 
-#### Cell stage predictions for trained DINO model
-WTC11_data/predictions_for_WTC11_trained_model.pth
+#### DINO model for WTC11 data
+WTC11_data/model_3_channels_checkpoint.pth
 
-#### Cell stage predictions for XGBoost
-WTC11_data/predictions_for_WTC11_xgb.pth
+### Baselines
+
+#### Pretrained model for WTC11 data
+WTC11_data/Pretrained_base16_DINO_checkpoint.pth
+
+### features
 
 #### DINO features for WTC11 data
 WTC11_data/DINO_features_and_df.pth
@@ -165,8 +201,26 @@ WTC11_data/pretrained_b_features.pth
 WTC11_data/pretrained_g_features.pth
 WTC11_data/pretrained_y_features.pth
 
-#### DINO model for WTC11 data
-WTC11_data/model_3_channels_checkpoint.pth
+### Embeddings
+
+#### UMAP of WTC11 features aggregated by FOV
+WTC11_data/Allen_3_channel_trained_embedding.pth
+
+#### UMAP of WTC11 features aggregated by FOV, harmonized
+WTC11_data/Allen_3_channel_trained_embedding_harmonized.pth
+
+### Classifiers
+
+#### Cell stage predictions for pretrained DINO model
+WTC11_data/predictions_for_WTC11_pretrained_model.pth
+
+#### Cell stage predictions for trained DINO model
+WTC11_data/predictions_for_WTC11_trained_model.pth
+
+### Misc
+
+#### Cell stage predictions for XGBoost
+WTC11_data/predictions_for_WTC11_xgb.pth
 
 #### WTC11 metadata
 WTC11_data/normalized_cell_df.csv
@@ -176,6 +230,13 @@ WTC11_data/train_indices.pth
 WTC11_data/test_indices.pth
 
 
-### Cell Painting
+## Cell Painting
 
- [TBD]
+
+### Model checkpoints
+### Baselines
+### features
+### Embeddings
+### Classifiers
+### Misc
+ 
