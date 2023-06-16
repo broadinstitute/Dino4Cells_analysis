@@ -31,25 +31,23 @@ def get_embeddings(features_to_fit, features_to_transform, labels=None):
     transformed_features = umap_unique.transform(scaled_features_to_transform.numpy())
     return umap_unique, 0, 0, transformed_features, scaled_features_to_transform
 
-def plot_UMAP(df, labels, embedding, title, filename):
+def plot_UMAP(df, labels, embedding, title, filename, color_indices):
     mat, labels = get_col_matrix(df, labels)
-    # plt.figure()
-    # plt.plot(np.nan, np.nan)
     plt.figure(figsize=(10,10), facecolor='white', dpi=300)
     plt.axis(False)
     plt.scatter(embedding[:, 0],
                 embedding[:, 1],
-                s=0.1,
+                s=0.01,
                 label='All data',
                 color='grey'
                )
-    for i in range(mat.shape[1]):
-        indices = np.where((mat[:, i] == 1) & (mat[:,:].sum(axis=1) == 1))[0]
+    for i, ind in enumerate(np.argsort(mat.sum(axis=0))[::-1]):
+        indices = np.where((mat[:, ind] == 1) & (mat.sum(axis=1) == 1))[0]
         plt.scatter(embedding[indices, 0],
                     embedding[indices, 1],
-                    s=0.1,
-                    label=labels[i],
-                    color=cmap(i / mat.shape[1])
+                    s=0.01,
+                    label=labels[ind],
+                    color=cmap(color_indices[ind] / mat.shape[1])
                    )
 
     plt.xlabel('UMAP 1')
@@ -335,28 +333,32 @@ def get_gene_heterogeneity_enrichement(feature_files, df_master_file, gene_heter
 def plot_gene_heterogeneity_enrichement(labels, enrichments, enrichments_image, heterogenous_type, gene_filename, image_filename):
     colors = ['#529de5','#d32c23','#55c87b',]
     if len(enrichments) > 0:
-        fig, ax = plt.subplots(1,1,figsize=(2.5,2.5), facecolor='white', dpi=300)
+        fig, ax = plt.subplots(1,1,figsize=(3.5,2.5), facecolor='white', dpi=300)
         for ind, label in enumerate(labels):
 #             plt.plot(enrichments[ind], label=label)
-            plt.plot(enrichments[ind][10:510], label=label, color=colors[ind])
-        plt.legend(frameon=False)
-        ax.set_xlabel('Number of genes, sorted by feature variance')
-        ax.set_ylabel('Percentage of ground truth heterogeneous genes')
-        ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
-        plt.xticks(range(0, 501, 100), range(10, 511, 100))
+            plt.plot((np.array(enrichments[ind][10:510]) * 100).astype(int), label=label, color=colors[ind])
+        ax.yaxis.set_major_formatter('{x:.0f}')
+        plt.legend(frameon=False, fontsize=7.5)
+        ax.set_xlabel('Number of genes\nsorted by feature variance', fontsize=10)
+        ax.set_ylabel('% Heterogeneous Genes', fontsize=10)
+        # ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
+        plt.xticks(range(0, 501, 100), range(10, 511, 100), fontsize=10)
+        plt.yticks(fontsize=10)
         print('')
         plt.title(f'Heterogeneous gene ranking ({heterogenous_type})')
         plt.savefig(gene_filename, format='pdf')
     if len(enrichments_image) > 0:
-        fig, ax = plt.subplots(1,1,figsize=(2.5,2.5), facecolor='white', dpi=300)
+        fig, ax = plt.subplots(1,1,figsize=(3.5,2.5), facecolor='white', dpi=300)
         for ind, label in enumerate(labels):
 #             plt.plot(enrichments_image[ind], label=label)
-            plt.plot(enrichments_image[ind][10:510], label=label, color=colors[ind])
-        plt.legend(frameon=False)
-        ax.set_xlabel('Number of genes, sorted by image heterogeneity')
-        ax.set_ylabel('Percentage of ground truth heterogeneous genes')
-        ax.yaxis.set_major_formatter(mtick.PercentFormatter(1.0))
-        plt.xticks(range(0, 501, 100), range(10, 511, 100))
+            plt.plot((np.array(enrichments_image[ind][10:510]) * 100).astype(int), label=label, color=colors[ind])
+        ax.yaxis.set_major_formatter('{x:.0f}')
+        plt.legend(frameon=False, fontsize=7.5)
+        ax.set_xlabel('Number of genes\nsorted by image heterogeneity', fontsize=10)
+        ax.set_ylabel('% Heterogeneous Genes', fontsize=10)
+        plt.xticks(range(0, 501, 100), range(10, 511, 100), fontsize=10)
+        plt.yticks(fontsize=10)
+
         print('')
         plt.title(f'Heterogeneous gene ranking ({heterogenous_type})')
         plt.savefig(image_filename, format='pdf')

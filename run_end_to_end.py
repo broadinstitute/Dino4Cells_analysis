@@ -27,12 +27,8 @@ from utils.label_dict import (
     cell_to_num_full,
     cell_to_num_single_cells,
 )
-from utils.classification_utils import get_classifier
-from utils.classification_utils import FocalBCELoss, threshold_output
-from utils.classification_utils import write_to_tensorboard
-from utils.classification_utils import get_scheduler, get_optimizer
-from utils.utils import init_distributed_mode, get_params_groups
-from utils.utils import is_main_process
+from utils.classification_utils import get_classifier, FocalBCELoss, threshold_output, write_to_tensorboard, get_scheduler, get_optimizer
+from utils.utils import is_main_process, init_distributed_mode, get_params_groups
 import utils.vision_transformer as vits
 from utils.yaml_tfms import tfms_from_config
 import base64
@@ -211,6 +207,9 @@ def run_end_to_end(
             dataset_function = partial(
                 AutoBalancedPrecomputedFeatures, target_column="proteins"
             )
+            if args.whole_images:
+                args.train_path = args.averaged_train_path
+                args.valid_path = args.averaged_valid_path
 
         elif args.train_cell_type:
             print("train_cell")
@@ -642,6 +641,7 @@ if __name__ == "__main__":
     parser.add_argument("--checkpoint_frq", default=50, type=int)
     parser.add_argument("--checksize", default=3, type=int)
     parser.add_argument("--check_batch", default=None, type=bool)
+    parser.add_argument("--test_last", default=False, type=bool)
     parser.add_argument("--train", default="True", type=str)
     parser.add_argument("--test", default="True", type=str)
     parser.add_argument(
