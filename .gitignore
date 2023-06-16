@@ -131,6 +131,13 @@ dmypy.json
 # data
 *.png
 *.jpg
+*.ckpt
 *.pth
 *.npy
+*.csv
+*.pdf
+*.swp
+*.tsv
 
+results/
+*_data/
