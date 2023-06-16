@@ -52,12 +52,23 @@ Run `notebooks/WTC11_classifiers.ipynb`
 
 #### To preprocess and sphere the LINCS data
 
-Run `notebooks/02-lincs-well-aggregation-sphering.ipynb`
+Run 'notebooks/01-training-profiles-visualization.ipynb'
+Run `notebooks/02-lincs-well-aggregation-sphering-cpcnn.ipynb`
+Run 'notebooks/03-lincs-profiles-visualizations.ipynb'
+Run 'notebooks/04-lincs-well-aggregation-sphering-vits.ipynb'
+
+#### To divide the data into train and test based on the compounts
+
+Run `notebooks/05-align-cellprofiler-profiles '
+Run `notebooks/06-train-test-split.ipynb'
 
 #### To classify the MOA
 
-[TBD]
+Run notebooks/07-moa-classification/run_model.sh
 
+#### To classify the Compounds
+
+Use code from DeepProfiler (Mohskov et al., 2022, Learning representations for image-based profiling of perturbations)
 
 
 ## In addition to the code above, we release the following models, features, embeddings, and auxiliery files to facilitate the reproduction of the results:
