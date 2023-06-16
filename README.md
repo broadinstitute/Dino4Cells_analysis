@@ -232,11 +232,4 @@ WTC11_data/test_indices.pth
 
 ## Cell Painting
 
-
-### Model checkpoints
-### Baselines
-### features
-### Embeddings
-### Classifiers
-### Misc
- 
+Data shall be made available shortly
