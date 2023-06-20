@@ -1,0 +1,1 @@
+This folder contains the yaml files used to pre-trian DINO ViT small model and extract features for various dataset.
