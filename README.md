@@ -176,26 +176,35 @@ WTC11_data/normalized_cell_df.csv
 ## features
 
 WTC11_data/DINO_features_and_df.pth
+
 WTC11_data/engineered_features.pth
+
 WTC11_data/pretrained_features_and_df.pth
 
 ## Embeddings
 
 WTC11_data/DINO_trained_embedding.pth
+
 WTC11_data/DINO_trained_harmonized_embedding.pth
+
 WTC11_data/pretrained_embedding.pth
+
 WTC11_data/pretrained_harmonized_embedding.pth
+
 WTC11_data/engineered_embedding.pth
 
 ## Classifiers
 
 WTC11_data/predictions_for_WTC11_trained_model.pth
+
 WTC11_data/predictions_for_WTC11_pretrained_model.pth
+
 WTC11_data/predictions_for_WTC11_xgb.pth
 
 ## Misc
 
 WTC11_data/train_indices.pth
+
 WTC11_data/test_indices.pth
 
 # Cell Painting
@@ -205,17 +214,19 @@ For the Cell Painting data, access [https://zenodo.org/record/8061428](https://z
 ## DINO model checkpoints
 
 Cell_Painting_data/DINO_cell_painting_base_checkpoint.pth
+
 Cell_Painting_data/DINO_cell_painting_small_checkpoint.pth
 
 ## metadata and embeddings
 
 Cell_Painting_data/LINCS_ViT_Small_Compressed_df_and_UMAP.csv
+
 Cell_Painting_data/Combined_CP_df_and_UMAP.csv
 
 ## features
 
 Code to calculate the PUMA results is in:
-https://github.com/CaicedoLab/2023_Moshkov_NatComm
+[https://github.com/CaicedoLab/2023_Moshkov_NatComm](https://github.com/CaicedoLab/2023_Moshkov_NatComm)
 
 
 ## misc (data partition indices, preprocessed data, etc.)
