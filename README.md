@@ -1,12 +1,24 @@
 # DINO4Cells_analysis 
 
-This repo will contain the code for reproducing the results and figures of the paper
+This repo will contain the code for reproducing the results and figures of the paper [Unbiased single-cell morphology with self-supervised vision transformers
+](https://www.biorxiv.org/content/10.1101/2023.06.16.545359v1).
+
+For the code to train the model, go to https://github.com/broadinstitute/Dino4Cells_analysis.
+
+## Data
+
+For the WTC11 data, access [https://zenodo.org/record/8061424](https://zenodo.org/record/8061424)
+For the Cell Painting data, access [https://zenodo.org/record/8061428](https://zenodo.org/record/8061428)
+For the HPA single cell data, access [https://zenodo.org/record/8061426](https://zenodo.org/record/8061426)
+For the HPA FOV data, access [https://zenodo.org/record/8061392](https://zenodo.org/record/8061392)
 
 ## Installation
 
 `pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116`
 
 `pip install -r requirements.py`
+
+Typical installation time: 10 minutes
 
 ## Classification
 
@@ -20,6 +32,9 @@ features
 embeddings
 classifiers
 misc (data partition indices, preprocessed data, etc.)
+
+Typical running time: 1 hour
+The expected output of the code is shown inside the jupyter notebooks
 
 # HPA FOV
 
