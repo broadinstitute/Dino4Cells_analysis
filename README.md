@@ -5,12 +5,6 @@ This repo will contain the code for reproducing the results and figures of the p
 
 For the code to train the model, go to https://github.com/broadinstitute/Dino4Cells_analysis.
 
-## Data
-
-For the WTC11 data, access [https://zenodo.org/record/8061424](https://zenodo.org/record/8061424)
-For the Cell Painting data, access [https://zenodo.org/record/8061428](https://zenodo.org/record/8061428)
-For the HPA single cell data, access [https://zenodo.org/record/8061426](https://zenodo.org/record/8061426)
-For the HPA FOV data, access [https://zenodo.org/record/8061392](https://zenodo.org/record/8061392)
 
 ## Installation
 
@@ -37,6 +31,8 @@ Typical running time: 1 hour
 The expected output of the code is shown inside the jupyter notebooks
 
 # HPA FOV
+
+For the HPA FOV data, access [https://zenodo.org/record/8061392](https://zenodo.org/record/8061392)
 
 ## Model checkpoints
 
@@ -83,6 +79,8 @@ HPA_FOV_data/whole_image_cell_color_indices.pth
 HPA_FOV_data/whole_image_protein_color_indices.pth
 
 # HPA single cells
+
+For the HPA single cell data, access [https://zenodo.org/record/8061426](https://zenodo.org/record/8061426)
 
 ## Model checkpoints
 
@@ -133,6 +131,8 @@ HPA_single_cells_data/protein_color_indices.pth
 
 # WTC11
 
+For the WTC11 data, access [https://zenodo.org/record/8061424](https://zenodo.org/record/8061424)
+
 ## Model checkpoints
 
 WTC11_data/DINO_checkpoint.pth
@@ -167,6 +167,8 @@ WTC11_data/train_indices.pth
 WTC11_data/test_indices.pth
 
 # Cell Painting
+
+For the Cell Painting data, access [https://zenodo.org/record/8061428](https://zenodo.org/record/8061428)
 
 ## DINO model checkpoints
 
