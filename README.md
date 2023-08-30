@@ -3,7 +3,7 @@
 This repo will contain the code for reproducing the results and figures of the paper [Unbiased single-cell morphology with self-supervised vision transformers
 ](https://www.biorxiv.org/content/10.1101/2023.06.16.545359v1).
 
-For the code to train the model, go to https://github.com/broadinstitute/Dino4Cells_analysis.
+For the code to train the model, go to https://github.com/broadinstitute/Dino4Cells_code.
 
 
 ## Installation
