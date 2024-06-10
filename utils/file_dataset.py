@@ -35,10 +35,12 @@ def one_channel_loader(path, training=True):
 def two_channel_loader(path, training=True):
     img = io.imread(path)
     if training:
+        print("TRAINING 1D MODE")
         out = img[:, :, 0:2]
         ch = np.random.randint(0, 4)
         out[:, :, 0] = t(img[:, :, ch])
     else:
+        print("INFERENCE 1D MODE")
         out = [t(img[:, :, [i, 1]]) for i in range(4)]
     return out
 
@@ -89,9 +91,9 @@ def pandas_reader_binary_labels(flist, target_labels=None, sample_single_cells=F
     if isinstance(flist, pd.DataFrame):
         files = flist
     else:
-        files = pd.read_csv(flist)[["file", "ID", "cell_type"] + target_labels]
+        files = pd.read_csv(flist)[["Path", "ID", "cell_type"] + target_labels]
     target_matrix = files[target_labels].values.astype(int)
-    file_names = files["file"].values
+    file_names = files["Path"].values
     IDs = files["ID"].values
     cell_lines = files["cell_type"].values
     if sample_single_cells:
@@ -131,7 +133,7 @@ def pandas_reader_no_labels(flist, target_labels=None):
     """
     flist format: impath label\nimpath label\n ...(same to caffe's filelist)
     """
-    files = pd.read_csv(flist)[["file", "ID"]]
+    files = pd.read_csv(flist)[["Path", "ID"]]
     print(len(files))
     files = np.array(files.to_records(index=False))
     imlist = []
@@ -159,14 +161,14 @@ def pandas_reader_only_file(flist, ids=None, sample_single_cells=False):
     if isinstance(flist, pd.DataFrame):
         files = flist
     else:
-        files = pd.read_csv(flist)[["file", "ID"]]
+        files = pd.read_csv(flist)[["Path", "ID"]]
     if type(ids) is not type(None):
         files = files[files.ID.isin(ids)]
     if sample_single_cells:
         ID_groups = files.groupby("ID").groups
         IDs = sorted(ID_groups.keys())
         file_names = [
-            files.iloc[ID_groups[ID]]["file"].values for ID in sorted(ID_groups.keys())
+            files.iloc[ID_groups[ID]]["Path"].values for ID in sorted(ID_groups.keys())
         ]
         imlist = []
         for impath, ID in zip(file_names, IDs):
@@ -293,16 +295,9 @@ class AutoBalancedPrecomputedFeatures(data.Dataset):
         self.IDs = np.array(IDs)
         self.proteins = proteins
         self.cells = cells
-        if target_column == "proteins":
-            if isinstance(proteins, np.ndarray):
-                self.target = torch.Tensor(proteins)
-            elif isinstance(proteins, torch.Tensor):
-                self.target = proteins.detach().cpu()
-        elif target_column == "cells":
-            if isinstance(cells, np.ndarray):
-                self.target = torch.Tensor(self.cells)
-            elif isinstance(cells, torch.Tensor):
-                self.target = self.cells.detach().cpu()
+        if target_column == "proteins": self.target = torch.Tensor(proteins)
+        else: 
+            self.target = torch.Tensor(cells)
             # the following line removes all IDs from the origianl kaggle
             # competition (Since they had no cell type)
             indices = np.where(pd.DataFrame(IDs)[0].str.contains("-") == False)[0]
@@ -313,6 +308,7 @@ class AutoBalancedPrecomputedFeatures(data.Dataset):
             self.target = self.target[indices, :]
         self.idx = []
         self.df = pd.DataFrame(range(len(self.features)), columns=["ind"])
+        self.class_counts = {label: 0 for label in range(self.target.shape[1])}
         if balance:
             self.parse_labels()
         self.balance = balance
@@ -350,6 +346,9 @@ class AutoBalancedPrecomputedFeatures(data.Dataset):
         else:
             sample_idx = index
         # sample_idx = self.df[self.df[str(class_id)]].sample(n=1).index[0]
+        # Update class count
+        self.class_counts[class_id] += 1
+
         return (
             self.features[sample_idx],
             self.target[sample_idx],
@@ -357,6 +356,14 @@ class AutoBalancedPrecomputedFeatures(data.Dataset):
 
     def __len__(self):
         return len(self.df)
+
+    def print_class_counts(self):
+        for label, count in self.class_counts.items():
+            print(f"Class {label}: {count} samples")
+
+    def print_original_class_counts(self):
+        [print(f"Original dataset - Class {label}: {self.target[:, label].sum().item()} samples") for label in range(self.target.shape[1])]
+
 
 
 class AutoBalancedFileList(ImageFileList):
@@ -380,6 +387,7 @@ class AutoBalancedFileList(ImageFileList):
         self.with_labels = with_labels
         self.root = root
         self.idx = []
+        self.class_counts = {label: 0 for label in self.unique}
 
     def parse_labels(self):
         if type(self.target_labels) is not type(None):
@@ -402,12 +410,15 @@ class AutoBalancedFileList(ImageFileList):
         N = int(self.stats.freq.mean())
         print("Sampling", N, "images per class for", len(self.unique), "classes")
         self.N = N * len(self.unique)
+        self.print_original_class_counts()
+        import pdb; pdb.set_trace()
 
     def __getitem__(self, index):
         # Mapping index to a virtual table of classes
         class_id = self.unique[index % len(self.unique)]
         sample_idx = self.imdf[self.imdf[class_id]].sample(n=1).index[0]
 
+        self.class_counts[class_id] += 1
         # Identify the sample
         if type(self.target_labels) is not type(None):
             impath, ID = self.imdf.iloc[sample_idx][["file", "ID"]]
@@ -439,7 +450,13 @@ class AutoBalancedFileList(ImageFileList):
 
     def __len__(self):
         return self.N
-
+    def print_class_counts(self):
+        for label, count in self.class_counts.items():
+            print(f"Class {label}: {count} samples")
+    def print_original_class_counts(self):
+        for label in self.unique:
+            count = np.sum(self.imdf[label])
+            print(f"Original dataset - Class {label}: {count} samples")
 
 data_loaders = {
     "HPA": ImageFileList,

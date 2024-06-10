@@ -114,10 +114,10 @@ def run_end_to_end(
 
     if type(args.train) == str:
         args.train = args.train == "True"
-    if type(args.train_protein) == str:
-        args.train_protein = args.train_protein == "True"
-    if type(args.train_cell_type) == str:
-        args.train_cell_type = args.train_cell_type == "True"
+    if args.targets == "protein_localization": #(!)
+        args.train_protein = "True"
+    if args.targets == "cell_type": #(!)
+        args.train_cell_type = "True"
     if type(args.test) == str:
         args.test = args.test == "True"
     if type(args.balance) == str:
@@ -155,6 +155,35 @@ def run_end_to_end(
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
+    # create train/val subsets if they don't exist yet:
+    # def subset_features(fts, IDs):
+    #     idxs = pd.Series(fts[3]).isin(IDs)
+    #     features = fts[0][idxs]
+    #     prot_lbls = torch.stack(fts[1])[idxs] 
+    #     prot_lbls = [prot_lbls[i,:] for i in range(prot_lbls.shape[0])] # converting back to list is v dumb. Fix?
+    #     cell_lbls = list(np.array(fts[2])[idxs])
+    #     IDs = list(np.array(fts[3])[idxs])
+    #     return [features, prot_lbls, cell_lbls, IDs]
+
+    def subset_features(fts, IDs):
+        idxs = pd.Series(fts[3]).isin(IDs)
+        return [np.array(i)[idxs] for i in fts]
+
+    train_path = f"{args.features.split('.')[0]}_{args.targets}_train.pth"
+    valid_path = f"{args.features.split('.')[0]}_{args.targets}_valid.pth"
+    if not os.path.isfile(train_path):
+        print(f"Preparing data subsets based on train and valid IDs:")
+        features = torch.load(args.features)
+        # remove rows in with no HPA_FOV protein_localization labels
+        print(f"Removing feature-rows with NO positive HPA_FOV (28) protein localization labels ")
+        idxs = np.array(features[1]).sum(axis=1) == 0
+        features = [np.array(i)[~idxs] for i in features]
+        for i in [train_path, valid_path]:
+            torch.save(subset_features(features, torch.load(args.train_ids)), i)
+            print(f"Saved: {i}")
+    else: 
+        for i in [train_path, valid_path]: print(f"Using {i}")
+    
     # setup dataloader
     if args.use_pretrained_features:
         train_transform = None
@@ -203,21 +232,22 @@ def run_end_to_end(
         dataset_function = ImageFileList
     else:
         feature_extractor = None
-        if args.train_protein:
+        if args.targets == 'protein_localization':
+            print("Training on protein localization labels")
+            args.train_protein = True
             dataset_function = partial(
-                AutoBalancedPrecomputedFeatures, target_column="proteins"
-            )
-            if args.whole_images:
-                args.train_path = args.averaged_train_path
-                args.valid_path = args.averaged_valid_path
-
-        elif args.train_cell_type:
-            print("train_cell")
+                AutoBalancedPrecomputedFeatures, target_column="proteins")
+        elif args.targets == 'cell_type':
+            print("Training on cell type labels")
+            args.train_cell_type = True
             dataset_function = partial(
-                AutoBalancedPrecomputedFeatures, target_column="cells"
-            )
-            args.train_path = args.cells_train_path
-            args.valid_path = args.cells_valid_path
+                AutoBalancedPrecomputedFeatures, target_column="cells")
+        else: 
+            print(f"{args.targets} is not implemented.")
+        
+        args.train_path = train_path
+        args.valid_path = valid_path 
+        
     # setup classifier head
     if args.use_pretrained_features == False:
         embed_dim = feature_extractor.embed_dim
@@ -326,6 +356,7 @@ def run_end_to_end(
     scheduler, lr_schedule, wd_schedule = get_scheduler(
         optim, int(total_steps), len(train_dl), args
     )
+    
     # Setup loss function
     if args.loss == "BCEWithLogitsLoss":
         criterion = torch.nn.BCEWithLogitsLoss()
@@ -638,6 +669,7 @@ def log_params(config, args, log_path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("DINO")
     parser.add_argument("--config", default=None, type=str)
+    parser.add_argument("--targets", default="protein_localization", type=str, choices=["protein_localization", "cell_type"])
     parser.add_argument("--checkpoint_frq", default=50, type=int)
     parser.add_argument("--checksize", default=3, type=int)
     parser.add_argument("--check_batch", default=None, type=bool)
@@ -654,15 +686,15 @@ if __name__ == "__main__":
     # parse unrecognized parameters
     args, unknown = parser.parse_known_args()
     print(args)
-    print(unknown)
-    if "--local_rank" in unknown[0]:
-        keys = unknown[1::2]
-        values = unknown[2::2]
-    else:
-        keys = unknown[0::2]
-        values = unknown[1::2]
-    for k, v in zip(keys, values):
-        setattr(args, k.replace("--", ""), v)
+    # print(unknown)
+    # if "--local_rank" in unknown[0]:
+    #    keys = unknown[1::2]
+    #    values = unknown[2::2]
+    #else:
+    #    keys = unknown[0::2]
+    #    values = unknown[1::2]
+   # for k, v in zip(keys, values):
+   #     setattr(args, k.replace("--", ""), v)
     run_end_to_end(
         args.config,
         loader=default_loader,

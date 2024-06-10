@@ -11,7 +11,6 @@ from tqdm import tqdm
 import json
 from datetime import datetime
 from skimage import io
-import cv2
 
 import torch
 from torch import nn
@@ -20,16 +19,16 @@ from torch.optim.lr_scheduler import OneCycleLR, CosineAnnealingLR, CyclicLR
 from sklearn.metrics import f1_score
 
 # custom code
-from label_dict import protein_to_num_full, protein_to_num_single_cells
-from utils import get_classifier
-from utils import init_distributed_mode
-from utils import is_main_process
-import vision_transformer as vits
+from utils.label_dict import protein_to_num_full, protein_to_num_single_cells
+from utils.classification_utils import get_classifier
+from utils.utils import init_distributed_mode
+from utils.utils import is_main_process
+from utils import vision_transformer as vits
 import base64
 from pycocotools import _mask as coco_mask
 import typing as t
 import zlib
-from file_dataset import (
+from utils.file_dataset import (
     ImageFileList,
     AutoBalancedFileList,
     AutoBalancedPrecomputedFeatures,

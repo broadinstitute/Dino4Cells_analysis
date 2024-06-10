@@ -51,7 +51,7 @@ from sklearn.metrics import average_precision_score
 import pandas as pd
 from skimage import io
 import matplotlib.ticker as mtick
-import kornia.geometry.transform.imgwarp as K
+# import kornia.geometry.transform.imgwarp as K
 import os
 import sys
 import time

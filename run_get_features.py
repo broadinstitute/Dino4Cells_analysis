@@ -57,13 +57,13 @@ if __name__ == "__main__":
     print(f"output_path is {output_path}")
 
     # TODO: fix these temp compatibility patches:
-    if not "HEAD" in list(config["embedding"].keys()):
-        print(
-            "Please see line 55 in run_get_embeddings.py for additional arguments that can be used to run the full backbone+HEAD model"
-        )
-    config["embedding"]["HEAD"] = (
-        True if "HEAD" in list(config["embedding"].keys()) else False
-    )
+    # if not "HEAD" in list(config["embedding"].keys()):
+    #     print(
+    #         "Please see line 55 in run_get_embeddings.py for additional arguments that can be used to run the full backbone+HEAD model"
+    #     )
+    # config["embedding"]["HEAD"] = (
+    #     True if "HEAD" in list(config["embedding"].keys()) else False
+    # )
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     # build model
@@ -79,15 +79,12 @@ if __name__ == "__main__":
 
     if config["model"]["model_type"] == "DINO":
         if config["model"]["arch"] in vits.__dict__.keys():
-            # model = vits.__dict__[config['model']['arch']](img_size=[112], patch_size=config['model']['patch_size'], num_classes=0, in_chans=config['model']['num_channels'])
-            # model = vits.__dict__[config['model']['arch']](img_size=[512], patch_size=config['model']['patch_size'], num_classes=0, in_chans=config['model']['num_channels'])
             model = vits.__dict__[config["model"]["arch"]](
-                img_size=[224],
+                img_size=config["embedding"]["image_size"],
                 patch_size=config["model"]["patch_size"],
                 num_classes=0,
                 in_chans=config["model"]["num_channels"],
             )
-            # model = vits.__dict__[config['model']['arch']](img_size=[224], patch_size=config['model']['patch_size'], num_classes=0, in_chans=config['model']['num_channels'])
             embed_dim = model.embed_dim
         elif config["model"]["arch"] in cell_models.__dict__.keys():
             model = partial(
@@ -97,13 +94,15 @@ if __name__ == "__main__":
             embed_dim = model[-1].in_features
             model[-1] = nn.Identity()
 
-        if config["embedding"]["HEAD"] == True:
+        if config["embedding"]["use_head"] == True:
+            print(f"Warning: you're computing features using the MLP head!")
             model = utils.MultiCropWrapper(
                 model,
                 DINOHead(
                     embed_dim,
-                    config["model"]["out_dim"],
-                    config["model"]["use_bn_in_head"],
+                    config["embedding"]["out_dim"],
+                    config["embedding"]["use_bn_in_head"],
+                    config["embedding"]["norm_last_layer"]
                 ),
             )
         for p in model.parameters():
@@ -140,8 +139,8 @@ if __name__ == "__main__":
                 p.requires_grad = False
             model = model.cuda()
             model = model.eval()
-            model = DataParallel(model)
-            # model = DataParallel(model, device_ids=[eval(args.gpus)])
+            # model = DataParallel(model)
+            model = DataParallel(model, device_ids=[eval(args.gpus)])
             # model = nn.parallel.DistributedDataParallel(model, device_ids=[eval(args.gpus)])
             print(
                 "Pretrained weights found at {} and loaded with msg: {}".format(
@@ -193,7 +192,7 @@ if __name__ == "__main__":
     data_loader = torch.utils.data.DataLoader(
         dataset,
         sampler=sampler,
-        batch_size=config["model"]["batch_size_per_gpu"],
+        batch_size=config["embedding"]["batch_size_per_gpu"],
         num_workers=config["embedding"]["num_workers"],
         pin_memory=True,
     )

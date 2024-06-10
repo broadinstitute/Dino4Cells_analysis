@@ -294,7 +294,7 @@ def get_args_parser():
         distributed training; see https://pytorch.org/docs/stable/distributed.html""",
     )
     parser.add_argument(
-        "--local_rank",
+        "--local-rank",
         default=0,
         type=int,
         help="Please ignore and do not set this argument.",
@@ -562,7 +562,12 @@ def train_one_epoch(
                 param_group["weight_decay"] = wd_schedule[it]
 
         # move images to gpu
+        # for n, i in enumerate(images):
+        #     print(f"{n}: {i.shape}")
+        # print("\n")
         images = [im.cuda(non_blocking=True) for im in images]
+        
+        
         # teacher and student forward passes + compute dino loss
         with torch.cuda.amp.autocast(fp16_scaler is not None):
             teacher_output = teacher(
